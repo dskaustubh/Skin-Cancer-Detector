@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+*.jpg
 
 # Distribution / packaging
 .Python
@@ -129,5 +130,5 @@ dmypy.json
 .pyre/
 
 model_inception.h5
-
+try.py
 data/
