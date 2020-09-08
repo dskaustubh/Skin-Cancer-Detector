@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse, fields
 import tensorflow as tf
 import numpy as np
 from werkzeug.utils import secure_filename
+import matplotlib.pyplot as plt
 app = Flask(__name__)
 api = Api(app)
 
@@ -10,11 +11,10 @@ class Predict(Resource):
     def get(self):
         return "app running"
     def post(self):
-        file=request.files['file']
-        filename = secure_filename(file.filename)
-        img = tf.keras.preprocessing.image.load_img(filename,target_size=(224,224,3))
         model = tf.keras.models.load_model('./model.h5')
-        x = tf.keras.preprocessing.image.img_to_array(img)
+        img = plt.imread(request.files['file'])
+        x = np.array(img, dtype=np.float32)
+        x=x.reshape(224,224,3)
         x = np.expand_dims(x, axis=0)
         x = x/255.0
         pred=model.predict(x)
