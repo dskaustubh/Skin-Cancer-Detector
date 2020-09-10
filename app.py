@@ -15,6 +15,7 @@ class Predict(Resource):
         model = tf.keras.models.load_model('./model.h5')
         file = request.files['file']
         filename = secure_filename(file.filename)
+        os.mkdir("tmp")
         filename="tmp/"+filename
         file.save(filename)#savefile
         img = tf.keras.preprocessing.image.load_img(filename,target_size=(224,224,3))
@@ -23,6 +24,7 @@ class Predict(Resource):
         x = x/255.0
         pred=model.predict(x)
         os.remove(filename)#deletefile
+        os.rmdir("tmp")
         print(pred[0][0])
         ret_obj={'prediction':str(pred[0][0])}
         return ret_obj
